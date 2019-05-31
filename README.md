@@ -6,8 +6,8 @@ Pega-se uma lista de números primos, calcula-se todos os anagramas de cada um d
 
 # Uso básico
 'var' é a lista de anagramas que são primos.
-'n1', 'n2' e 'n3' são respectivamente a mantissa, ordem de grandeza e o valor a ser somado com número obtido entre 'n1' e 'n2' (o valor padrão é 200). 
+'n1', 'n2', 'n3' e 'n4' são respectivamente a mantissa, expoente (base 10), valor a ser somado com o número obtido entre 'n1' e 'n2', e o número máximo de primos a ser retornado dentre os que foram achados, podendo retornar menos primos que o especificado.
 
-var = call_fases(n1, n2, n3)
+var = call_fases(n1, n2, n3, n4)
 
 print(var)

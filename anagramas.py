@@ -14,6 +14,10 @@ def anagrama(var1):
 	return k
 
 def miller_rabin(n, k=100):
+	"""
+	n = número a ser testado.\n
+	k = número de repetições do teste.
+	"""
 	if n == 2:
 		return True
 	if n%2 == 0:
@@ -49,27 +53,22 @@ def remove_repetidos(lista):
 	l.sort()
 	return l
 
-def fase1(f0, f1, f2):
+def fase1(mantissa, expoente, n_soma):
 	"""
 	Implementação da 'fase1' com os valores passados.
 	"""
-	t1 = int(f0*(10**f1)) + 1
-	t2 = t1 + f2
+	t1 = int(mantissa*pow(10, expoente)) + 1
+	t2 = t1 + n_soma
 
-	p1 = []
+	primos = []
 	for i0 in range(t1, t2, 2):
 		if i0%5 == 0:
 			pass
 		else:
-			p1.append(i0)
-
-	primos = []
-
-	for u1 in p1:
-		if (miller_rabin(u1, 100)) == True:
-			primos.append(u1)
-		else:
-			pass
+			if (miller_rabin(i0, 100)) == True:
+				primos.append(i0)
+			else:
+				pass
 
 	l3 = []
 	for i2 in primos:
@@ -81,31 +80,35 @@ def fase1(f0, f1, f2):
 				pass
 	return l3
 
-def fase2(jk):
+def fase2(jk, n=5):
 	"""
 	Implementação da 'fase2' com a saída da 'fase1' após ser removidos os repetidos.
 	"""
+	jk.sort(reverse=True)
 	dc = {}
 	for p in jk:
-		if (miller_rabin(p, 100)) == True:
-			dc[str(jk.index(p) + 1)]=p
+		if len(dc) < n:
+			if (miller_rabin(p, 100)) == True:
+				dc[str(jk.index(p) + 1)]=p
+			else:
+				pass
 		else:
-			pass
+			break
 
 	fg = []
 	try:
 		for k in dc:
 			fg.append(dc[k])
-
 	except IndexError:
 		pass
 	return fg
 
-def call_fases(x, y, z=200):
+def call_fases(mantissa, expoente, n_soma=100, n=5):
 	"""
 	Chamada das funções principais.
 	"""
-	var1 = fase1(x, y, z)
+	var1 = fase1(mantissa, expoente, n_soma)
 	var2 = remove_repetidos(var1)
-	var3 = fase2(var2)
+	var3 = fase2(var2, n)
+	var3.sort()
 	return var3
