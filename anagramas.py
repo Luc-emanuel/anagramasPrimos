@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from itertools import permutations
+import random
 
 """
 Script simples, sem necessidade no momento de uso de classes.
@@ -12,25 +13,28 @@ def anagrama(var1):
 	k = [''.join(anagrama) for anagrama in permutations(str(var1))]
 	return k
 
-def teste_primalidade(var1):
-	"""
-	Verifica se determinado é composto ou não.
-	"""
-	y, l1 = int(var1**(1/2)), []
-	for i in range(1, y+1):
-		if var1 % i == 0:
-			d = len(l1)
-			if d <= 1:
-				l1.append(i)
-			else:
+def miller_rabin(n, k=100):
+	if n == 2:
+		return True
+	if n%2 == 0:
+		return False
+	r, s = 0, n - 1
+	while s%2 == 0:
+		r += 1
+		s //= 2
+
+	for _ in range(k):
+		a = random.randrange(2, n - 1)
+		x = pow(a, s, n)
+		if x == 1 or x == n - 1:
+			continue
+		for _ in range(r - 1):
+			x = pow(x, 2, n)
+			if x == n - 1:
 				break
 		else:
-			pass
-	if len(l1) == 1:
-		re = 1
-	else:
-		re = 0
-	return re
+			return False
+	return True
 
 def remove_repetidos(lista):
 	"""
@@ -62,7 +66,7 @@ def fase1(f0, f1, f2):
 	primos = []
 
 	for u1 in p1:
-		if (teste_primalidade(u1)) == 1:
+		if (miller_rabin(u1, 100)) == True:
 			primos.append(u1)
 		else:
 			pass
@@ -83,8 +87,7 @@ def fase2(jk):
 	"""
 	dc = {}
 	for p in jk:
-		a = teste_primalidade(p)
-		if a == 1:
+		if (miller_rabin(p, 100)) == True:
 			dc[str(jk.index(p) + 1)]=p
 		else:
 			pass
