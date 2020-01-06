@@ -2,10 +2,6 @@
 from itertools import permutations
 import random
 
-"""
-Script simples, sem necessidade no momento de uso de classes.
-"""
-
 def anagrama(var1):
 	"""
 	Transforma 'var1' em string e calcula os anagramas.
