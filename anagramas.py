@@ -36,19 +36,6 @@ def miller_rabin(n, k=100):
 			return False
 	return True
 
-def remove_repetidos(lista):
-	"""
-	Remove os anagramas iguais.
-	"""
-	l = []
-	for i in lista:
-		if i not in l:
-			l.append(i)
-		else:
-			pass
-	l.sort()
-	return l
-
 def fase1(mantissa, expoente, n_soma):
 	"""
 	Implementação da 'fase1' com os valores passados.
@@ -80,7 +67,6 @@ def fase2(jk, n=5):
 	"""
 	Implementação da 'fase2' com a saída da 'fase1' após ser removidos os repetidos.
 	"""
-	jk.sort(reverse=True)
 	dc = {}
 	for p in jk:
 		if len(dc) < n:
@@ -104,7 +90,10 @@ def call_fases(mantissa, expoente, n_soma=100, n=5):
 	Chamada das funções principais.
 	"""
 	var1 = fase1(mantissa, expoente, n_soma)
-	var2 = remove_repetidos(var1)
+	print('  Número de anagramas:                {}'.format(len(var1)))
+	var2 = list(set(var1))
+	print('  Número de anagramas sem repetições: {}'.format(len(var2)))
 	var3 = fase2(var2, n)
+	print('  Número de primos encontrados:       {}'.format(len(var3)))
 	var3.sort()
 	return var3
