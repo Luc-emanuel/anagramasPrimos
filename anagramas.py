@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from itertools import permutations
-import random
+import random, tqdm
 
 def anagrama(var1):
 	"""
@@ -44,7 +44,7 @@ def fase1(mantissa, expoente, n_soma):
 	t2 = t1 + n_soma
 
 	primos = []
-	for i0 in range(t1, t2, 2):
+	for i0 in tqdm.tqdm(range(t1, t2, 2), desc='  Calculando primos no intervalo ({}, {})'.format(t1, t2)):
 		if i0%5 == 0:
 			pass
 		else:
@@ -54,13 +54,15 @@ def fase1(mantissa, expoente, n_soma):
 				pass
 
 	l3 = []
-	for i2 in primos:
-		fr = anagrama(i2)
+	for i2 in tqdm.tqdm(primos, desc='  Pegando os anagramas > {}'.format(primos[-1])):
+		fr = list(set(anagrama(i2)))
 		for ft in fr:
-			if (int(ft)) > primos[-1]:
-				l3.append(int(ft))
-			else:
-				pass
+			ift = int(ft)
+			if ift not in l3:
+				if ift > primos[-1]:
+					l3.append(ift)
+				else:
+					pass
 	return l3
 
 def fase2(jk, n=5):
@@ -68,7 +70,7 @@ def fase2(jk, n=5):
 	Implementação da 'fase2' com a saída da 'fase1' após ser removidos os repetidos.
 	"""
 	dc = {}
-	for p in jk:
+	for p in tqdm.tqdm(jk, desc='  Testando anagramas'):
 		if len(dc) < n:
 			if (miller_rabin(p, 100)) == True:
 				dc[str(jk.index(p) + 1)]=p
@@ -85,15 +87,29 @@ def fase2(jk, n=5):
 		pass
 	return fg
 
-def call_fases(mantissa, expoente, n_soma=100, n=5):
+def call_fases(mantissa, expoente, n, n_soma=100):
 	"""
 	Chamada das funções principais.
 	"""
 	var1 = fase1(mantissa, expoente, n_soma)
-	print('  Número de anagramas:                {}'.format(len(var1)))
 	var2 = list(set(var1))
-	print('  Número de anagramas sem repetições: {}'.format(len(var2)))
 	var3 = fase2(var2, n)
+	print('  Número de anagramas:                {}'.format(len(var1)))
+	print('  Número de anagramas sem repetições: {}'.format(len(var2)))
 	print('  Número de primos encontrados:       {}'.format(len(var3)))
+	print('  Porcentagem de primos (%):          {}'.format('%.4f'%(100 * (len(var3)/len(var2)))))
 	var3.sort()
 	return var3
+
+# Chamada de exemplo
+if '__main__' == __name__:
+	mantis = 1	# mantissa básica
+	exp = 5		# expoente para base 10
+	n_max_primos = 10000	# número máximo de primos a serem retornados, podendo ser menor o número retornado
+	n_sum = 1000	# número a ser somado com o número gerado pela mantissa e expoente
+	var = call_fases(mantis, exp, n_max_primos, n_sum)
+	if len(var) > 0:
+		print('  Menor primo encontrado:             {}'.format(var[0]))
+		print('  Maior primo encontrado:             {}'.format(var[-1]))
+	else:
+		print('  Nenhum primo encontrado!')
