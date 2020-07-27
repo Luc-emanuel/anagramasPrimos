@@ -101,6 +101,7 @@ def call_fases(mantissa, expoente, n, n_soma=100):
 	var3.sort()
 	return var3
 
+"""
 # Chamada de exemplo
 if '__main__' == __name__:
 	mantis = 1	# mantissa básica
@@ -113,3 +114,4 @@ if '__main__' == __name__:
 		print('  Maior primo encontrado:             {}'.format(var[-1]))
 	else:
 		print('  Nenhum primo encontrado!')
+"""
